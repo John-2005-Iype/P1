@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Notes</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        input, textarea { margin-bottom: 10px; padding: 8px; width: 250px; }
+        button { cursor: pointer; display: block; }
+        ul { list-style: none; padding: 0; margin-top: 20px; }
+        li { margin-bottom: 5px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+<h2>Student Notes</h2>
+
+<input id="name" placeholder="Student Name"><br>
+<textarea id="content" placeholder="Note content"></textarea><br>
+<button onclick="addNote()">Add Note</button>
+
+<ul id="list"></ul>
+
+<script>
+const API_URL = 'http://localhost:3000/notes';
+
+async function loadNotes() {
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+
+        document.getElementById('list').innerHTML = data.map(n => 
+            `<li><b>${n.student_name}:</b> ${n.content}</li>`
+        ).join('');
+    } catch (err) {
+        console.error("Error loading notes:", err);
+    }
+}
+
+async function addNote() {
+    const student_name = document.getElementById('name').value;
+    const content = document.getElementById('content').value;
+
+    if (!student_name || !content) return;
+
+    await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ student_name, content }) // ✅ FIXED
+    });
+
+    document.getElementById('name').value = '';
+    document.getElementById('content').value = '';
+
+    loadNotes();
+}
+
+loadNotes();
+</script>
+
+</body>
+</html>

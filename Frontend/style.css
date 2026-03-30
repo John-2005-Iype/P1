@@ -1,0 +1,5 @@
+body { font-family: sans-serif; padding: 20px; }
+input, textarea { margin-bottom: 10px; padding: 8px; width: 250px; }
+button { cursor: pointer; display: block; }
+ul { list-token: none; padding: 0; margin-top: 20px; }
+li { margin-bottom: 5px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
